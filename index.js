@@ -2,33 +2,29 @@ module.exports = async (req, res) => {
     const { url } = req.query; // Получаем параметр URL из запроса
   
     if (!url) {
-      return res.status(400).send('No URL provided');
+      return res.status(400).send('No URL provided'); // Если URL не передан
     }
   
     try {
-      console.log(`Fetching image from URL: ${url}`); // Логируем URL, который пытаемся загрузить
+      console.log(`Received URL: ${url}`); // Логируем полученный URL
   
-      // Проверка, что URL корректно закодирован
-      const encodedUrl = encodeURIComponent(url);
-      console.log(`Encoded URL: ${encodedUrl}`);
+      // Выполняем запрос на внешний сервер с правильным URL
+      const imageResponse = await fetch(url);
   
-      // Выполняем запрос на внешний сервер
-      const imageResponse = await fetch(encodedUrl);
-  
-      // Проверка на успешный ответ
+      // Если ответ не успешный, возвращаем ошибку
       if (!imageResponse.ok) {
-        console.log(`Failed to fetch image. Status: ${imageResponse.status}`); // Логируем статус ошибки
+        console.error(`Failed to fetch image. Status: ${imageResponse.status}`);
         return res.status(500).send('Failed to fetch the image from the source');
       }
   
-      // Получаем содержимое изображения
+      // Получаем изображение
       const buffer = await imageResponse.buffer();
   
-      // Устанавливаем правильные заголовки для контента
+      // Устанавливаем правильные заголовки для изображения
       res.setHeader('Content-Type', imageResponse.headers.get('Content-Type'));
       res.send(buffer);
     } catch (error) {
-      console.error(`Error fetching image: ${error.message}`); // Логируем ошибку
-      return res.status(500).send('Failed to fetch the image');
+      console.error(`Error occurred while fetching the image: ${error.message}`);
+      return res.status(500).send('Error fetching the image');
     }
   };
