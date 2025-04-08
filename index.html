@@ -4,14 +4,15 @@
     <title>Image</title>
 </head>
 <body>
-    <img src="" id="image" style="max-width: 100%">
     <script>
-        // Получаем URL из параметров
+        // Берём url из параметров страницы
         const urlParams = new URLSearchParams(window.location.search);
         const imageUrl = urlParams.get('url');
         if (imageUrl) {
-            // Устанавливаем src для картинки через наш прокси
-            document.getElementById('image').src = '/image?url=' + imageUrl;
+            // Создаём img и вставляем на страницу
+            const img = document.createElement('img');
+            img.src = '/image?url=' + imageUrl;
+            document.body.appendChild(img);
         }
     </script>
 </body>
