@@ -10,6 +10,10 @@ module.exports = async (req, res) => {
     try {
         const response = await fetch(url);
         const data = await response.blob();
+        
+        // Устанавливаем правильный Content-Type для картинки
+        res.setHeader('Content-Type', 'image/jpeg');
+        
         const arrayBuffer = await data.arrayBuffer();
         res.send(Buffer.from(arrayBuffer));
     } catch (error) {
