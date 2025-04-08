@@ -1,29 +1,17 @@
 const fetch = require('node-fetch');
 
 module.exports = async (req, res) => {
-    const { url } = req.query;
-    
-    if (!url) {
-        return res.status(400).send('Нужен URL');
-    }
-
     try {
-        const response = await fetch(url, {
-            headers: { 'Referer': 'https://www.dekomo.ru/' }
+        const response = await fetch(req.query.url, {
+            headers: {
+                'User-Agent': 'Mozilla/5.0',
+                'Referer': 'https://www.dekomo.ru/'
+            }
         });
-        
-        // Проверяем успешность запроса
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
-        // Устанавливаем заголовки
-        res.setHeader('Content-Type', response.headers.get('content-type') || 'image/jpeg');
-        
-        // Передаём картинку
-        return response.body.pipe(res);
+        const buffer = await response.buffer();
+        res.setHeader('Content-Type', 'image/jpeg');
+        res.send(buffer);
     } catch (error) {
-        console.error('Error:', error);
-        res.status(500).send('Ошибка загрузки изображения');
+        res.status(500).send('Error');
     }
 };
