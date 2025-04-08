@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Image</title>
+    <title>Image Viewer</title>
 </head>
 <body>
     <script>
@@ -11,7 +11,8 @@
         if (imageUrl) {
             // Создаём img и вставляем на страницу
             const img = document.createElement('img');
-            img.src = '/image?url=' + imageUrl;
+            img.style.maxWidth = '100%';
+            img.src = '/image?url=' + encodeURIComponent(imageUrl);
             document.body.appendChild(img);
         }
     </script>

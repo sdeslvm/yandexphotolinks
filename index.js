@@ -9,13 +9,14 @@ module.exports = async (req, res) => {
 
     try {
         const response = await fetch(url);
-        const data = await response.blob();
         
-        // Устанавливаем правильный Content-Type для картинки
-        res.setHeader('Content-Type', 'image/jpeg');
+        // Берём тип контента из оригинального ответа
+        const contentType = response.headers.get('content-type');
+        res.setHeader('Content-Type', contentType);
         
-        const arrayBuffer = await data.arrayBuffer();
-        res.send(Buffer.from(arrayBuffer));
+        // Просто передаём поток данных напрямую
+        response.body.pipe(res);
+        
     } catch (error) {
         res.status(500).send('Ошибка');
     }
