@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Image</title>
+</head>
+<body>
+    <img src="" id="image" style="max-width: 100%">
+    <script>
+        // Получаем URL из параметров
+        const urlParams = new URLSearchParams(window.location.search);
+        const imageUrl = urlParams.get('url');
+        if (imageUrl) {
+            // Устанавливаем src для картинки через наш прокси
+            document.getElementById('image').src = '/image?url=' + imageUrl;
+        }
+    </script>
+</body>
+</html> 
