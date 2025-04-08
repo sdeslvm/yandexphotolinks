@@ -8,7 +8,9 @@ module.exports = async (req, res) => {
     }
 
     try {
-        const response = await fetch(url);
+        const response = await fetch(url, {
+            headers: { 'Referer': 'https://www.dekomo.ru/' }
+        });
         
         // Проверяем успешность запроса
         if (!response.ok) {

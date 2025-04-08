@@ -5,7 +5,7 @@
     <script>
         const url = new URLSearchParams(location.search).get('url');
         if(url) {
-            document.getElementById('image').src = url;
+            document.getElementById('image').src = '/image?url=' + url;
         }
     </script>
 </body>
