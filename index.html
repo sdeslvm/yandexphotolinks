@@ -4,7 +4,7 @@
     <img id="image" style="max-width:100%">
     <script>
         const url = new URLSearchParams(location.search).get('url');
-        if(url) document.getElementById('image').src = '/api/image?url=' + url;
+        if(url) document.getElementById('image').src = '/image?url=' + url;
     </script>
 </body>
 </html> 
