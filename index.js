@@ -10,14 +10,18 @@ module.exports = async (req, res) => {
     try {
         const response = await fetch(url);
         
-        // Берём тип контента из оригинального ответа
-        const contentType = response.headers.get('content-type');
-        res.setHeader('Content-Type', contentType);
+        // Проверяем успешность запроса
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
         
-        // Просто передаём поток данных напрямую
-        response.body.pipe(res);
+        // Устанавливаем заголовки
+        res.setHeader('Content-Type', response.headers.get('content-type') || 'image/jpeg');
         
+        // Передаём картинку
+        return response.body.pipe(res);
     } catch (error) {
-        res.status(500).send('Ошибка');
+        console.error('Error:', error);
+        res.status(500).send('Ошибка загрузки изображения');
     }
 };

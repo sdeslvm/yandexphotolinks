@@ -4,17 +4,29 @@
     <title>Image Viewer</title>
 </head>
 <body>
+    <div id="imageContainer"></div>
     <script>
-        // Берём url из параметров страницы
-        const urlParams = new URLSearchParams(window.location.search);
-        const imageUrl = urlParams.get('url');
-        if (imageUrl) {
-            // Создаём img и вставляем на страницу
-            const img = document.createElement('img');
-            img.style.maxWidth = '100%';
-            img.src = '/image?url=' + encodeURIComponent(imageUrl);
-            document.body.appendChild(img);
-        }
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const imageUrl = urlParams.get('url');
+            
+            if (imageUrl) {
+                const container = document.getElementById('imageContainer');
+                const img = new Image();
+                img.style.maxWidth = '100%';
+                img.src = '/image?url=' + encodeURIComponent(imageUrl);
+                
+                // Добавим обработку ошибок
+                img.onerror = function() {
+                    container.innerHTML = 'Ошибка загрузки изображения';
+                };
+                
+                // Добавим обработку успешной загрузки
+                img.onload = function() {
+                    container.appendChild(img);
+                };
+            }
+        };
     </script>
 </body>
 </html> 
