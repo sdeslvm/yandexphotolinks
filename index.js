@@ -1,17 +1,20 @@
-const fetch = require('node-fetch');
+import fetch from 'node-fetch';
 
-module.exports = async (req, res) => {
+export default async function handler(req, res) {
     try {
-        const response = await fetch(req.query.url, {
+        const imageRes = await fetch(req.query.url, {
             headers: {
-                'User-Agent': 'Mozilla/5.0',
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/91.0.4472.124',
+                'Accept': 'image/webp,image/apng,image/*,*/*;q=0.8',
+                'Accept-Language': 'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7',
                 'Referer': 'https://www.dekomo.ru/'
             }
         });
-        const buffer = await response.buffer();
-        res.setHeader('Content-Type', 'image/jpeg');
-        res.send(buffer);
-    } catch (error) {
-        res.status(500).send('Error');
+
+        const imageBuffer = await imageRes.arrayBuffer();
+        res.setHeader('Content-Type', imageRes.headers.get('content-type'));
+        res.send(Buffer.from(imageBuffer));
+    } catch {
+        res.status(500).end();
     }
-};
+}

@@ -12,7 +12,7 @@
     ],
     "routes": [
       {
-        "src": "/image",
+        "src": "/api/image",
         "dest": "/index.js"
       },
       {
